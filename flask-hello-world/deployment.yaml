@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+  namespace: exercise
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: <docker-hub registry name. Ex: ansh2599lehri>/hello-world:v7
+        args:
+        - flask
+        - run
+        - --host=0.0.0.0
+        - --port=5000
+        ports:
+        - containerPort: 80
+      tolerations:
+        - key: "test-cluster-owner"
+          operator: "Equal"
+          value: "rattle"
+          effect: "NoSchedule"
